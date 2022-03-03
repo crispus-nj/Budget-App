@@ -19,7 +19,22 @@ class Html{
 
         document.querySelector('.primary').insertBefore(message_wrapper, addExpenseForm)
 
+        setTimeout(()=> {
+            document.querySelector('.primary .alert').remove()
+            addExpenseForm.reset()
+        }, 2000)
+    }
+    add_expense_to_the_list(name, amount){
+        const expense_list = document.querySelector('#expenses ul')
 
+        const li = document.createElement('li')
+        li.className = 'list-group-item d-flex justify-content-center align-items-center'
+
+        li.innerHTML = `
+        <span class='mr-5'>${name}</span> 
+            <span class='badge badge-primary badge-pill ml-5'>$ ${amount}</span>
+        `
+        expense_list.appendChild(li)
     }
 }
 
@@ -38,7 +53,7 @@ let budget, userBudget;
 clickFunction = ()=>{
 
     document.addEventListener('DOMContentLoaded', () => {
-        userBudget = prompt('What is your monthly budget: \n')
+        userBudget = prompt('What is your weekly budget: \n')
         // console.log(userBudget)
         if (userBudget === null || userBudget === '' || userBudget === '0'){
             window.location.reload()
@@ -58,8 +73,7 @@ clickFunction = ()=>{
         if (expense_name === '' || amount === ''){
             html.print_message('Error occured! All fields are mandatory!', 'alert-danger')
         } else {
-            console.log("Valid details")
-            console.log(expense_name, amount)
+            html.add_expense_to_the_list(expense_name, amount)
         }
     })
 }
