@@ -5,6 +5,9 @@ class Budget {
         this.budget = Number(budget)
         this.balance = this.budget
     }
+    deduct_budget(amount){
+        return this.balance -= amount
+    }
 }
 class Html{
     insertAmount(amount){
@@ -32,9 +35,23 @@ class Html{
 
         li.innerHTML = `
         <span class='mr-5'>${name}</span> 
-            <span class='badge badge-primary badge-pill ml-5'>$ ${amount}</span>
+            <span class='badge badge-primary badge-pill ml-5'>Ksh ${amount}</span>
         `
         expense_list.appendChild(li)
+    }
+    track_budget(amount){
+        const budget_balance = budget.deduct_budget(amount)
+        balance.innerHTML = `
+        ${budget_balance}
+        `
+        if ((budget.budget / 4 ) > budget_balance){
+            balance.parentElement.parentElement.classList.remove('alert-success' ,'alert-warning')
+            balance.parentElement.parentElement.classList.add('alert-danger')
+        }
+        else if ((budget.budget / 2 ) > budget_balance){
+            balance.parentElement.parentElement.classList.remove('alert-success')
+            balance.parentElement.parentElement.classList.add('alert-warning')
+        }
     }
 }
 
@@ -74,6 +91,9 @@ clickFunction = ()=>{
             html.print_message('Error occured! All fields are mandatory!', 'alert-danger')
         } else {
             html.add_expense_to_the_list(expense_name, amount)
+            html.track_budget(amount)
+            html.print_message('Added...', 'alert-success')
+
         }
     })
 }
